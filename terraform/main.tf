@@ -1,6 +1,7 @@
 locals {
   vm1_ip = "192.168.177.18"
   vm2_ip = "192.168.177.22"
+  ansible_dir = "${path.module}/../ansible"
 }
 
 resource "null_resource" "vm1" {
@@ -19,7 +20,7 @@ resource "null_resource" "vm1" {
     command = <<-EOT
       ansible-playbook \
         -i ${local.vm1_ip}, \
-        ${var.ansible_playbook_vm1} \
+        ${local.ansible_dir}/playbooks/vm1_playbook.yml \
         --private-key ${pathexpand(var.ssh_private_key_path)} \
         --extra-vars "svc_user=${var.svc_user}" \
         -u ${var.vm1_user} \
@@ -46,11 +47,11 @@ resource "null_resource" "vm2" {
     command = <<-EOT
       ansible-playbook \
         -i ${local.vm2_ip}, \
-        ${var.ansible_playbook_vm2} \
+        ${local.ansible_dir}/playbooks/vm2_playbook.yml \
         --private-key ${pathexpand(var.ssh_private_key_path)} \
         --extra-vars "svc_user=${var.svc_user} vm1_ip=${local.vm1_ip}" \
         -u ${var.vm2_user} \
         --ssh-extra-args='-o StrictHostKeyChecking=no'
     EOT
   }
-}  
+}
