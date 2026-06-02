@@ -9,7 +9,7 @@
     node_exporter_port: 9101
 
   roles:
-    - role: /home/falcon/diploma/ansible/roles/common
-    - role: /home/falcon/diploma/ansible/roles/nginx
-    - role: /home/falcon/diploma/ansible/roles/fail2ban
-    - role: /home/falcon/diploma/ansible/roles/node_exporter
+    - role: "{{ playbook_dir }}/../roles/common"
+    - role: "{{ playbook_dir }}/../roles/nginx"
+    - role: "{{ playbook_dir }}/../roles/fail2ban"
+    - role: "{{ playbook_dir }}/../roles/node_exporter"
