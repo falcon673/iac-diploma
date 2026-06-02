@@ -12,7 +12,7 @@
     vm1_ip: "192.168.177.18"
 
   roles:
-    - role: /home/falcon/diploma/ansible/roles/common
-    - role: /home/falcon/diploma/ansible/roles/fail2ban
-    - role: /home/falcon/diploma/ansible/roles/prometheus
-    - role: /home/falcon/diploma/ansible/roles/grafana
+    - role: "{{ playbook_dir }}/../roles/common"
+    - role: "{{ playbook_dir }}/../roles/fail2ban"
+    - role: "{{ playbook_dir }}/../roles/prometheus"
+    - role: "{{ playbook_dir }}/../roles/grafana"
