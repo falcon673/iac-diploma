@@ -1,0 +1,15 @@
+---
+- name: Налаштування VM1 — Командний сервер
+  hosts: all
+  become: yes
+  gather_facts: yes
+
+  vars:
+    svc_user: "svcuser"
+    node_exporter_port: 9101
+
+  roles:
+    - role: /home/falcon/diploma/ansible/roles/common
+    - role: /home/falcon/diploma/ansible/roles/nginx
+    - role: /home/falcon/diploma/ansible/roles/fail2ban
+    - role: /home/falcon/diploma/ansible/roles/node_exporter

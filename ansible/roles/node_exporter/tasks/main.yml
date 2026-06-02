@@ -1,0 +1,51 @@
+---
+- name: Створення користувача node_exporter
+  user:
+    name: node_exporter
+    system: yes
+    shell: /usr/sbin/nologin
+    create_home: no
+
+- name: Перевірка чи вже встановлений node_exporter
+  stat:
+    path: /usr/local/bin/node_exporter
+  register: ne_binary
+
+- name: Завантаження node_exporter
+  get_url:
+    url: "https://github.com/prometheus/node_exporter/releases/download/v1.7.0/node_exporter-1.7.0.linux-amd64.tar.gz"
+    dest: /tmp/node_exporter.tar.gz
+  when: not ne_binary.stat.exists
+
+- name: Розпакування node_exporter
+  unarchive:
+    src: /tmp/node_exporter.tar.gz
+    dest: /tmp/
+    remote_src: yes
+  when: not ne_binary.stat.exists
+
+- name: Копіювання бінарного файлу
+  copy:
+    src: /tmp/node_exporter-1.7.0.linux-amd64/node_exporter
+    dest: /usr/local/bin/node_exporter
+    owner: node_exporter
+    group: node_exporter
+    mode: "0755"
+    remote_src: yes
+  when: not ne_binary.stat.exists
+
+- name: Розгортання systemd юніту
+  template:
+    src: node_exporter.service.j2
+    dest: /etc/systemd/system/node_exporter.service
+    mode: "0644"
+  notify:
+    - reload systemd
+    - restart node_exporter
+
+- name: Запуск та увімкнення node_exporter
+  systemd:
+    name: node_exporter
+    enabled: yes
+    state: started
+    daemon_reload: yes

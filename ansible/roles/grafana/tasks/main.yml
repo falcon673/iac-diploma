@@ -1,0 +1,49 @@
+---
+- name: Додавання GPG ключа Grafana
+  apt_key:
+    url: https://packages.grafana.com/gpg.key
+    state: present
+
+- name: Додавання репозиторію Grafana
+  apt_repository:
+    repo: "deb https://packages.grafana.com/oss/deb stable main"
+    state: present
+    filename: grafana
+
+- name: Встановлення Grafana
+  apt:
+    name: grafana
+    state: present
+    update_cache: yes
+
+- name: Створення директорії datasources
+  file:
+    path: /etc/grafana/provisioning/datasources
+    state: directory
+    owner: grafana
+    group: grafana
+    mode: "0755"
+
+- name: Розгортання datasource Prometheus
+  template:
+    src: datasource.yml.j2
+    dest: /etc/grafana/provisioning/datasources/prometheus.yml
+    owner: grafana
+    group: grafana
+    mode: "0644"
+  notify: restart grafana
+
+- name: Розгортання конфігурації Grafana
+  template:
+    src: grafana.ini.j2
+    dest: /etc/grafana/grafana.ini
+    owner: grafana
+    group: grafana
+    mode: "0640"
+  notify: restart grafana
+
+- name: Запуск та увімкнення Grafana
+  systemd:
+    name: grafana-server
+    enabled: yes
+    state: started

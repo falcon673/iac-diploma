@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>VM1 — Командний сервер</title>
+    <style>
+        body { background: #0a0e1a; color: #00ff88; font-family: monospace; display: flex; align-items: center; justify-content: center; min-height: 100vh; margin: 0; }
+        .box { border: 1px solid #00ff88; padding: 40px; max-width: 600px; width: 90%; }
+        h1 { color: #00ff88; }
+        .label { color: #ff9f43; }
+        .value { color: #a9ff68; }
+        .ok { color: #27c93f; }
+    </style>
+</head>
+<body>
+    <div class="box">
+        <h1>VM1 — Командний сервер</h1>
+        <p><span class="label">Hostname:</span> <span class="value">{{ ansible_hostname }}</span></p>
+        <p><span class="label">IP:</span> <span class="value">{{ ansible_default_ipv4.address }}</span></p>
+        <p><span class="label">OS:</span> <span class="value">{{ ansible_distribution }} {{ ansible_distribution_version }}</span></p>
+        <p><span class="label">CPU:</span> <span class="value">{{ ansible_processor_vcpus }} cores</span></p>
+        <p><span class="label">RAM:</span> <span class="value">{{ (ansible_memtotal_mb / 1024) | round(1) }} GB</span></p>
+        <hr style="border-color:#1e3a2e;">
+        <p class="ok">● Nginx — active</p>
+        <p class="ok">● Fail2ban — active</p>
+        <p class="ok">● Node Exporter — active</p>
+        <hr style="border-color:#1e3a2e;">
+        <p style="color:#8892a4; font-size:12px;">Метод автоматизованого розгортання ІТ-інфраструктури з використанням технологій ІаС</p>
+    </div>
+</body>
+</html>

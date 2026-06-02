@@ -1,0 +1,51 @@
+---
+- name: Оновлення системи
+  apt:
+    update_cache: true
+    upgrade: "dist"
+
+- name: Встановлення базових пакетів
+  apt:
+    name:
+      - curl
+      - wget
+      - git
+      - htop
+      - net-tools
+      - vim
+      - unzip
+      - chrony
+      - ufw
+      - rsyslog
+    state: present
+
+- name: Запуск та увімкнення chrony
+  systemd:
+    name: chrony
+    enabled: yes
+    state: started
+
+- name: Запуск та увімкнення rsyslog
+  systemd:
+    name: rsyslog
+    enabled: yes
+    state: started
+
+- name: Створення службового користувача
+  user:
+    name: "{{ svc_user }}"
+    groups: sudo
+    shell: /bin/bash
+    create_home: yes
+    state: present
+
+- name: Налаштування SSH — заборона root та паролів
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "{{ item.regexp }}"
+    line: "{{ item.line }}"
+  loop:
+    - { regexp: '^PermitRootLogin', line: 'PermitRootLogin no' }
+    - { regexp: '^PasswordAuthentication', line: 'PasswordAuthentication no' }
+    - { regexp: '^PubkeyAuthentication', line: 'PubkeyAuthentication yes' }
+  notify: restart sshd
