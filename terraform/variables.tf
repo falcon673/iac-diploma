@@ -61,3 +61,13 @@ variable "svc_user" {
   type    = string
   default = "svcuser"
 }
+
+variable "ansible_playbook_vm1" {
+  type    = string
+  default = "~/diploma/ansible/playbooks/vm1_playbook.yml"
+}
+
+variable "ansible_playbook_vm2" {
+  type    = string
+  default = "~/diploma/ansible/playbooks/vm2_playbook.yml"
+}
