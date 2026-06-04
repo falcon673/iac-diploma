@@ -17,3 +17,11 @@ output "grafana_url" {
 output "prometheus_url" {
   value = "http://${local.vm2_ip_clean}:9090"
 }
+
+output "vm_credentials" {
+  value = "Логін для VM: falcon | Пароль: falcon123!"
+}
+
+output "grafana_credentials" {
+  value = "Grafana: http://${local.vm2_ip_clean}:3000 | Логін: admin | Пароль: admin"
+}
