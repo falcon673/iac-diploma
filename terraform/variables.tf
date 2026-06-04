@@ -18,13 +18,13 @@ variable "proxmox_password" {
 variable "proxmox_node" {
   description = "Назва вузла Proxmox"
   type        = string
-  default     = "pve"
+  default     = "pvecadet"
 }
 
 variable "template_name" {
   description = "Назва шаблону Ubuntu 22.04"
   type        = string
-  default     = "ubuntu-22.04-template"
+  default     = "ubuntu22.04"
 }
 
 variable "vm1_ip" {
@@ -39,7 +39,7 @@ variable "vm2_ip" {
 
 variable "gateway" {
   type    = string
-  default = "192.168.177.1"
+  default = "192.168.177.254"
 }
 
 variable "ssh_private_key_path" {
@@ -62,12 +62,33 @@ variable "svc_user" {
   default = "svcuser"
 }
 
-variable "ansible_playbook_vm1" {
-  type    = string
-  default = "~/diploma/ansible/playbooks/vm1_playbook.yml"
+variable "vm1_name" {
+  description = "Назва VM1 у Proxmox"
+  type        = string
+  default     = "auto"
 }
 
-variable "ansible_playbook_vm2" {
-  type    = string
-  default = "~/diploma/ansible/playbooks/vm2_playbook.yml"
+variable "vm2_name" {
+  description = "Назва VM2 у Proxmox"
+  type        = string
+  default     = "auto"
+}
+
+variable "vm1_vmid" {
+  description = "ID VM1 у Proxmox (унікальний)"
+  type        = number
+  default     = 0
+}
+
+variable "vm2_vmid" {
+  description = "ID VM2 у Proxmox (унікальний)"
+  type        = number
+  default     = 0
+}
+
+variable "vm_password" {
+  description = "Пароль для нових VM"
+  type        = string
+  default     = "falcon123"
+  sensitive   = true
 }

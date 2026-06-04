@@ -47,3 +47,40 @@
     name: grafana-server
     enabled: yes
     state: started
+
+- name: Завантаження дашборду Node Exporter
+  get_url:
+    url: "https://grafana.com/api/dashboards/1860/revisions/latest/download"
+    dest: /tmp/node_exporter_dashboard.json
+    mode: "0644"
+
+- name: Очікування запуску Grafana
+  wait_for:
+    port: "{{ grafana_port }}"
+    delay: 10
+    timeout: 60
+
+- name: Імпорт дашборду Node Exporter Full
+  shell: |
+    python3 -c "
+    import json, urllib.request, base64
+    with open('/tmp/node_exporter_dashboard.json') as f:
+        dashboard = json.load(f)
+    payload = json.dumps({
+        'dashboard': dashboard,
+        'overwrite': True,
+        'folderId': 0,
+        'inputs': [{'name': 'DS_PROMETHEUS', 'type': 'datasource', 'pluginId': 'prometheus', 'value': 'Prometheus'}]
+    }).encode()
+    req = urllib.request.Request(
+        'http://localhost:{{ grafana_port }}/api/dashboards/import',
+        data=payload,
+        headers={'Content-Type': 'application/json', 'Authorization': 'Basic YWRtaW46YWRtaW4='}
+    )
+    try:
+        with urllib.request.urlopen(req) as r:
+            print(r.read().decode())
+    except Exception as e:
+        print(str(e))
+    "
+  ignore_errors: yes

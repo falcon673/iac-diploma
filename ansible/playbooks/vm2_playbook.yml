@@ -9,7 +9,7 @@
     node_exporter_port: 9101
     prometheus_port: 9090
     grafana_port: 3000
-    vm1_ip: "192.168.177.18"
+    vm1_ip: "{{ hostvars['localhost']['vm1_ip'] | default('192.168.177.50') }}"
 
   roles:
     - role: "{{ playbook_dir }}/../roles/common"
