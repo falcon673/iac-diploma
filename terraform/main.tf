@@ -44,7 +44,7 @@ resource "proxmox_virtual_environment_vm" "vm1" {
     user_account {
       username = var.vm1_user
       password = "falcon123!"
-      keys     = [file(pathexpand("~/.ssh/id_rsa.pub"))]
+      keys     = [var.ssh_public_key]
     }
   }
 
@@ -117,7 +117,7 @@ resource "proxmox_virtual_environment_vm" "vm2" {
     user_account {
       username = var.vm2_user
       password = "falcon123!"
-      keys     = [file(pathexpand("~/.ssh/id_rsa.pub"))]
+      keys     = [var.ssh_public_key]
     }
   }
 

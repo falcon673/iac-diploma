@@ -92,3 +92,9 @@ variable "vm_password" {
   default     = "falcon123"
   sensitive   = true
 }
+
+variable "ssh_public_key" {
+  description = "SSH публічний ключ для VM"
+  type        = string
+  default     = ""
+}
